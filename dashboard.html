@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .dashboard-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #welcome-message {
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    button {
+      background-color: #f44336;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h2>Welcome to Your Dashboard</h2>
+    <p id="welcome-message"></p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    // Display the user's name in the welcome message
+    const welcomeMessage = `Welcome, ${sessionStorage.getItem('username')}!`;
+    document.getElementById('welcome-message').innerText = welcomeMessage;
+
+    // Logout function
+    async function logout() {
+      const response = await fetch('http://localhost:5001/logout', {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+        sessionStorage.removeItem('username'); // Remove the username from sessionStorage
+        window.location.href = 'index.html'; // Redirect back to login
+      } else {
+        alert('Failed to log out.');
+      }
+    }
+  </script>
+</body>
+</html>
