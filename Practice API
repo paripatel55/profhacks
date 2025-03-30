@@ -1,0 +1,21 @@
+import google.generativeai as genai
+from PIL import Image
+
+# Set API key directly
+genai.configure(api_key="AIzaSyDmEyz-Oh7pBuKXhzdF9sp8mKMT_9EidlM")
+# Generate a response from Gemini
+print("Hello world")
+Image.open("example.jpg")
+model = genai.GenerativeModel('gemini-1.5-turbo')
+def image_loader(image_path):
+    with open(image_path, "rb") as img_file:
+        image_data = img_file.read()
+    # the prompt for Gemini
+    prompt = 'analyze and extract the expense name and amount for each row from the image(repeat for each row in the image)'
+    response = model.generate_content([
+        {"type": "image", "data": image_data},  # Image input
+        {"type": "text", "text": prompt}       # Text input
+    ])
+    return response
+response = image_loader("example.jpg")
+print(response.text)
